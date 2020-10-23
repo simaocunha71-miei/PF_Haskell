@@ -28,7 +28,6 @@ enumFromThenTo_my a b c | a > c = []
 -- (++) [1,2,3] [10,20,30] corresponde a lista [1,2,3,10,20,30]
 
 concatena :: [a] -> [a] -> [a]
-concatena [] []   = []
 concatena l []    = l
 concatena [] l    = l
 concatena (h:t) l = h : concatena t l
@@ -91,9 +90,9 @@ drop_my n (h:t) = drop_my (n - 1) t
 -- Por exemplo, zip [1,2,3] [10,20,30,40] corresponde a [(1,10),(2,20),(3,30)]
 
 zip_my :: [a] -> [b] -> [(a,b)]
-zip_my [a] [b] = [(a,b)]
+zip_my [a] [b]      = [(a,b)]
 zip_my (h:t) (x:xs) = (h,x) : zip_my t xs 
-zip_my _ _ = []
+zip_my _ _          = []
 
 --------------------------------------------------------------------------------------- exercicio 9 ----------------------------------------------------------------------------------------------
 -- testa se um elemento ocorre numa lista
@@ -130,9 +129,9 @@ intersperce_my a (h:t) = h:a:intersperce_my a t
 
 -- Por exemplo, group [1,2,2,3,4,4,4,5,4] corresponde a [[1],[2,2],[3],[4,4,4],[5],[4]]
 
---group_my :: Eq a => [a] -> [[a]]
---group_my [] = [[]]
---group_my (h:t) = (h:my_takeWhile (== h) t) : group_my (my_dropWhile (== h) t)
+group_my :: Eq a => [a] -> [[a]]
+group_my [] = [[]]
+group_my (h:t) = (h:my_takeWhile (== h) t) : group_my (my_dropWhile (== h) t)
 
 {-
 -- determina os primeiros elementos da lista que satisfazem um dado predicado; por exemplo
@@ -142,7 +141,6 @@ my_takeWhile :: (a->Bool) -> [a] -> [a]
 my_takeWhile _ []    = []
 my_takeWhile f (h:t) = if f h then h: my_takeWhile f t 
                               else []
-
 
 -- elimina os primeiros elementos da lista que satisfazem um dado predicado; por exemplo:
 --                                                                           dropWhile odd [1,3,4,5,6,6] == [4,5,6,6]
@@ -182,14 +180,14 @@ inits_my :: [a] -> [[a]]
 inits_my [] = [[]]
 inits_my l = inits_my (init_my l) ++ [l] 
 
-
-
+{-
+Funcoes auxiliares:
 
 init_my :: [a] -> [a]
 init_my [a] = []
 init_my (h:t) = h: init_my t
 
-{-
+
 (++) :: [a] -> [a] -> [a]
 (++) [] []   = []
 (++) l []    = l
@@ -207,14 +205,14 @@ tails_my :: [a] -> [[a]]
 tails_my [] = [[]]
 tails_my l = l : tails_my (tail_my l) 
 
-
-
+{-
+Funcao auxiliar:
 
 tail_my :: [a] -> [a]
 tail_my [a] = []
 tail_my (h:t) = t
 
-
+-}
 
 --------------------------------------------------------------------------------------- exercicio 16 ----------------------------------------------------------------------------------------------
 -- testa se uma lista e prefixo de outra
@@ -226,12 +224,15 @@ isPrefixOf_my :: Eq a => [a] -> [a] -> Bool
 isPrefixOf_my l1 l2 = l1 `elem_my` inits_my l2
 
 {-
+Funcoes auxiliares:
 
 elem_my :: Eq a => a -> [a] -> Bool
 elem_my _ [] = False
 elem_my a (h:t) = if a == h then True 
                             else elem_my a t 
 
+
+---------------------------
 inits_my :: [a] -> [[a]]
 inits_my [] = [[]]
 inits_my l = inits_my (init_my l) ++ [l] 
@@ -261,12 +262,14 @@ isSuffixOf_my :: Eq a => [a] -> [a] -> Bool
 isSuffixOf_my l1 l2 = l1 `elem_my` tails_my l2
 
 {-
+Funcoes auxiliares:
 
 elem_my :: Eq a => a -> [a] -> Bool
 elem_my _ [] = False
 elem_my a (h:t) = if a == h then True 
                             else elem_my a t 
 
+----------------------------
 tails_my :: [a] -> [[a]]
 tails_my [] = [[]]
 tails_my l = l : tails_my (tail_my l) 
@@ -275,7 +278,6 @@ tails_my l = l : tails_my (tail_my l)
 tail_my :: [a] -> [a]
 tail_my [a] = []
 tail_my (h:t) = t
-
 
 -}
 
@@ -288,8 +290,7 @@ tail_my (h:t) = t
 isSubsequenceOf_my :: Eq a => [a] -> [a] -> Bool
 isSubsequenceOf_my [] _        = True
 isSubsequenceOf_my _ []        = False
-isSubsequenceOf_my (h:t) (a:b) = (h == a && isSubsequenceOf_my t b) || 
-                                            isSubsequenceOf_my (h:t) b 
+isSubsequenceOf_my (h:t) (a:b) = (h == a && isSubsequenceOf_my t b) || isSubsequenceOf_my (h:t) b 
 
 --------------------------------------------------------------------------------------- exercicio 19 ----------------------------------------------------------------------------------------------
 -- calcula a lista de posicoes em que um dado elemento ocorre numa lista
@@ -308,8 +309,18 @@ elemIndices_my a (h:t) | a == h    = 0 : map (+1) (elemIndices_my a t)
 
 nub_my :: Eq a => [a] -> [a]
 nub_my [] = []
-nub_my (h:t) = if elem h t then nub_my t 
-                           else h : nub_my t
+nub_my (h:t) = if elem_my h t then nub_my t 
+                              else h : nub_my t
+
+{-
+Funcao auxiliar:
+
+elem_my :: Eq a => a -> [a] -> Bool
+elem_my _ [] = False
+elem_my a (h:t) = if a == h then True 
+                            else elem_my a t 
+
+-}
 
 --------------------------------------------------------------------------------------- exercicio 21 ----------------------------------------------------------------------------------------------
 -- retorna a lista resultante de remover (a primeira ocorrencia de) um dado elemento de uma lista
@@ -333,6 +344,7 @@ remove_ocorrencias [] _ = []
 remove_ocorrencias l (h:t) = remove_ocorrencias (delete_my h l) t
 
 {-
+Funcao auxiliar:
 
 delete_my :: Eq a => a -> [a] -> [a]
 delete_my _ [] = []
@@ -353,6 +365,7 @@ union_my l (h:t) = if elem_my h l then  union_my l t
                                   else (union_my l t) ++ [h]
 
 {-
+Funcoes auxiliares:
 
 elem_my :: Eq a => a -> [a] -> Bool
 elem_my _ [] = False
@@ -378,6 +391,7 @@ intersect_my (h:t) l | h `elem` l = h : intersect_my t l
                      | otherwise  =     intersect_my t l
 
 {-
+Funcao auxiliar:
 
 elem_my :: Eq a => a -> [a] -> Bool
 elem_my _ [] = False
@@ -407,6 +421,7 @@ unwords_my []    = ""
 unwords_my (h:t) = h ++ unwords_my t
 
 {-
+Funcao auxiliar:
 
 (++) :: [a] -> [a] -> [a]
 (++) [] []   = []
@@ -426,6 +441,7 @@ unlines_my []    = ""
 unlines_my (h:t) = h ++ "\n" ++ unlines_my t
 
 {-
+Funcao auxiliar:
 
 (++) :: [a] -> [a] -> [a]
 (++) [] []   = []
@@ -445,6 +461,7 @@ pMaior_my (h:t) | h > (t !! (pMaior_my t)) = 1
                 | otherwise                = 1 + pMaior_my t
 
 {-
+Funcao auxiliar:
 
 (!!) :: [a] -> Int -> a
 (!!) (h:t) a = if a == 0 then h 
@@ -463,6 +480,7 @@ temRepetidos_my [a]     = False
 temRepetidos_my (h:x:t) = if h `elem` (x:t) then True else temRepetidos_my (x:t)
 
 {-
+Funcao auxiliar:
 
 elem_my :: Eq a => a -> [a] -> Bool
 elem_my _ [] = False
@@ -478,8 +496,18 @@ elem_my a (h:t) = if a == h then True
 
 algarismos_my :: [Char] -> [Char]
 algarismos_my []    = []
-algarismos_my (h:t) = if h `elem` ['0'..'9'] then h : algarismos_my t 
-                                             else algarismos_my t
+algarismos_my (h:t) = if h `elem_my` ['0'..'9'] then h : algarismos_my t 
+                                                else algarismos_my t
+
+{-
+Funcao auxiliar:
+
+elem_my :: Eq a => a -> [a] -> Bool
+elem_my _ [] = False
+elem_my a (h:t) = if a == h then True 
+                            else elem_my a t 
+
+-}
 
 --------------------------------------------------------------------------------------- exercicio 31 ---------------------------------------------------------------------------------------------
 -- determina os elementos de uma lista que ocorrem em posicoes ımpares 
@@ -524,6 +552,7 @@ iSort_my [] = []
 iSort_my (h:t) = insert_my h (iSort_my t)
 
 {-
+Funcao auxiliar:
 
 insert_my ::  Ord a => a -> [a] -> [a] 
 insert_my _ [] = []
@@ -558,7 +587,8 @@ menor (h1:t1) (h2:t2) = if (ord h1) <= (ord h2) then menor t1 t2
 
 elemMSet_my :: Eq a => a -> [(a,Int)] -> Bool
 elemMSet_my _ [] = False
-elemMSet_my a ((b,d):t) = if a == b then True else elemMSet_my a t 
+elemMSet_my a ((b,d):t) = if a == b then True 
+                                    else elemMSet_my a t 
 
 --------------------------------------------------------------------------------------- exercicio 37 ---------------------------------------------------------------------------------------------
 -- calcula o tamanho de um multiconjunto
@@ -579,6 +609,7 @@ converteMSet_my [] = []
 converteMSet_my ((a,b):t) = (replicate_my b a) ++ converteMSet_my t 
 
 {-
+Funcoes auxiliares:
 
 replicate_my :: Int -> a -> [a]
 replicate_my 0 a = []
@@ -623,6 +654,18 @@ constroiMSet_my :: Ord a => [a] -> [(a,Int)]
 constroiMSet_my []    = []
 constroiMSet_my (h:t) = (h,1 + length (filter (==h) t)) : constroiMSet_my (filter (/=h) t)
 
+{-
+Funcoes auxiliares:
+
+length :: [a] -> Int
+length []    = 0
+length (h:t) = 1 + length t
+
+filter_my ::  (a -> Bool) -> [a] -> [a]
+filter_my f []    = []
+filter_my f (h:t) = if (f h) then h:filter_my f t 
+                             else filter_my f t
+-}
 
 --------------------------------------------------------------------------------------- exercicio 42 ---------------------------------------------------------------------------------------------
 -- divide uma lista de Eithers em duas listas
@@ -630,6 +673,9 @@ constroiMSet_my (h:t) = (h,1 + length (filter (==h) t)) : constroiMSet_my (filte
 partitionEithers_my :: [Either a b] -> ([a],[b])
 partitionEithers_my [] = ([],[])
 partitionEithers_my l  = (partition_left l, partition_right l)
+
+{-
+Funcoes auxiliares:
 
 partition_left :: [Either a b] -> [a]
 partition_left []             = []
@@ -640,6 +686,7 @@ partition_right :: [Either a b] -> [b]
 partition_right []            = []
 partition_right ((Right x):t) = x : partition_right t
 partition_right ((Left  _):t) = partition_right t
+-}
 
 --------------------------------------------------------------------------------------- exercicio 43 ---------------------------------------------------------------------------------------------
 -- colecciona os elementos do tipo a de uma lista
@@ -658,3 +705,74 @@ data Movimento = Norte | Sul | Este | Oeste
 -- dada uma posicao inicial (coordenadas) e uma lista de movimentos, calcula a posicao final do robot depois de efectuar essa sequencia de movimentos
 
 posicao_my :: (Int,Int) -> [Movimento] -> (Int,Int)
+posicao_my (a,b) []        = (a,b)
+posicao_my (x,y) (h:t) = posicao_my (case h of Norte -> (x, y + 1)
+                                               Sul   -> (x, y - 1)
+                                               Este  -> (x + 1, y)
+                                               Oeste -> (x - 1, y)) t
+
+--------------------------------------------------------------------------------------- exercicio 45 ---------------------------------------------------------------------------------------------
+-- dadas as posicoes inicial e final (coordenadas) do robot, produz uma lista de movimentos suficientes para que o robot passe de uma posicao para a outra
+
+caminho_my :: (Int,Int) -> (Int,Int) -> [Movimento]
+caminho_my (a,b) (c,d) | a < c   = Este  : caminho_my (a + 1, b) (c, d)
+                       | a > c   = Oeste : caminho_my (a - 1, b) (c, d)
+                       | b < d   = Norte : caminho_my (a, b + 1) (c, d)
+                       | b > d   = Sul   : caminho_my (a, b - 1) (c, d)
+                       | otherwise = []
+
+--------------------------------------------------------------------------------------- exercicio 46 ---------------------------------------------------------------------------------------------
+-- testa se uma lista de movimentos so e composta por movimentos verticais (Norte ou Sul)
+
+vertical_my :: [Movimento] -> Bool
+vertical_my [] = True
+vertical_my (h:t) = case h of Oeste -> False
+                              Este  -> False
+                              _     -> vertical_my t
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+data Posicao = Pos Int Int
+             deriving Show
+--------------------------------------------------------------------------------------- exercicio 47 ---------------------------------------------------------------------------------------------
+-- dada uma lista nao vazia de posicoes, determina a que esta mais perto da origem (note que as coordenadas de cada ponto sao numeros inteiros)
+
+maisCentral_my :: [Posicao] -> Posicao
+maisCentral_my [(Pos x y)]               = (Pos x y) 
+maisCentral_my ((Pos x y):(Pos x1 y1):t) = if dist1 < dist2 then (Pos x y)
+                                                            else maisCentral_my ((Pos x1 y1):t)
+                                         where
+                                          dist1 = sqrt (fromIntegral(x^2  + y^2))
+                                          dist2 = sqrt (fromIntegral(x1^2 + y1^2))
+
+--------------------------------------------------------------------------------------- exercicio 48 ---------------------------------------------------------------------------------------------
+-- dada uma posicao e uma lista de posicoes, selecciona da lista as posicoes adjacentes a posicao dada
+
+vizinhos_my :: Posicao -> [Posicao] -> [Posicao]
+vizinhos_my _ []            = [] 
+vizinhos_my (Pos x y) ((Pos x1 y1):t) = if dist_abcissa || dist_ordenada then (Pos x1 y1) : vizinhos_my (Pos x y) t 
+                                                                         else               vizinhos_my (Pos x y) t
+                                      where
+                                        dist_abcissa  = abs (x - x1) == 1 && y == y1
+                                        dist_ordenada = abs (y - y1) == 1 && x == x1
+
+--------------------------------------------------------------------------------------- exercicio 49 ---------------------------------------------------------------------------------------------
+-- testa se todas as posicoes de uma dada lista tem a mesma ordenada
+
+mesmaOrdenada_my :: [Posicao] -> Bool
+mesmaOrdenada_my [(Pos x y)]               = True
+mesmaOrdenada_my ((Pos x y):(Pos x1 y1):t) = if y == y1 then mesmaOrdenada_my ((Pos x1 y1):t) 
+                                                        else False 
+
+--------------------------------------------------------------------------------------- exercicio 50 ---------------------------------------------------------------------------------------------
+data Semaforo = Verde | Amarelo | Vermelho
+              deriving Show
+
+-- testa se o estado dos semaforos de um cruzamento e seguro, i.e., nao ha mais do que semaforo nao vermelho
+interseccaoOK_my :: [Semaforo] -> Bool
+interseccaoOK_my l = contadorSemaf l < 2 
+
+contadorSemaf :: [Semaforo] -> Int 
+contadorSemaf []           = 0
+contadorSemaf (Vermelho:t) = contadorSemaf t
+contadorSemaf (Verde:t)    = 1 + contadorSemaf t
+contadorSemaf (Amarelo:t)  = 1 + contadorSemaf t
