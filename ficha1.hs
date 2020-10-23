@@ -155,14 +155,12 @@ next smf | smf == Verde = Amarelo
 -- alinea B
 -- determina se e obrigatorio parar num semaforo
 stop :: Semaforo -> Bool
-stop smf | smf == Vermelho = True
-         | otherwise = False   
+stop smf = smf == Vermelho  
 
 -- alinea C
 -- testa se o estado de dois semaforos num cruzamento e seguro   
 safe :: Semaforo -> Semaforo -> Bool
-safe smf1 smf2 | smf1 == Vermelho || smf2 == Vermelho = True
-               | otherwise = False
+safe smf1 smf2 = smf1 == Vermelho || smf2 == Vermelho 
 
 --------------------------------------------------------------------------------------- exercicio 6 ----------------------------------------------------------------------------------------------
 

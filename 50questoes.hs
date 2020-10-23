@@ -593,3 +593,68 @@ replicate_my i a = a : replicate_my (i-1) a
 -}
 
 --------------------------------------------------------------------------------------- exercicio 39 ---------------------------------------------------------------------------------------------
+-- acrescenta um elemento a um multi-conjunto
+
+-- Por exemplo, insereMSet ’c’ [(’b’,2), (’a’,4), (’c’,1)] corresponde a [(’b’,2),(’a’,4), (’c’,2)]
+
+insereMSet_my ::  Eq a => a -> [(a,Int)] -> [(a,Int)] 
+insereMSet_my _ [] = []
+insereMSet_my e ((a,i):t) = if e == a then (a,i+1):t 
+                                      else (a,i):insereMSet_my e t
+
+--------------------------------------------------------------------------------------- exercicio 40 ---------------------------------------------------------------------------------------------
+-- remove um elemento a um multi-conjunto. 
+-- Se o elemento nao existir, deve ser retornado o multi-conjunto recebido
+
+-- Por exemplo, removeMSet ’c’ [(’b’,2), (’a’,4), (’c’,1)] corresponde a [(’b’,2),(’a’,4)]
+
+removeMSet_my ::   Eq a => a -> [(a,Int)] -> [(a,Int)]
+removeMSet_my _ [] = []
+removeMSet_my e ((a,i):t) | e == a && i == 1 = t 
+                          | e == a           = (a,i-1):t
+                          | otherwise        = (a,i):removeMSet_my e t
+
+--------------------------------------------------------------------------------------- exercicio 41 ---------------------------------------------------------------------------------------------
+-- dada uma lista ordenada por ordem crescente, calcula o multi-conjunto dos seus elementos
+
+-- Por exemplo, constroiMSet "aaabccc" corresponde a [(’a’,3), (’b’,1), (’c’,3)]
+
+constroiMSet_my :: Ord a => [a] -> [(a,Int)] 
+constroiMSet_my []    = []
+constroiMSet_my (h:t) = (h,1 + length (filter (==h) t)) : constroiMSet_my (filter (/=h) t)
+
+
+--------------------------------------------------------------------------------------- exercicio 42 ---------------------------------------------------------------------------------------------
+-- divide uma lista de Eithers em duas listas
+
+partitionEithers_my :: [Either a b] -> ([a],[b])
+partitionEithers_my [] = ([],[])
+partitionEithers_my l  = (partition_left l, partition_right l)
+
+partition_left :: [Either a b] -> [a]
+partition_left []             = []
+partition_left ((Left  x):t)  = x : partition_left t
+partition_left ((Right _):t)  = partition_left t
+
+partition_right :: [Either a b] -> [b]
+partition_right []            = []
+partition_right ((Right x):t) = x : partition_right t
+partition_right ((Left  _):t) = partition_right t
+
+--------------------------------------------------------------------------------------- exercicio 43 ---------------------------------------------------------------------------------------------
+-- colecciona os elementos do tipo a de uma lista
+
+catMaybes_my :: [Maybe a] -> [a]
+catMaybes_my [] = []
+catMaybes_my ((Nothing):t) = catMaybes_my t
+catMaybes_my ((Just x) :t) = x         : catMaybes_my t
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+data Movimento = Norte | Sul | Este | Oeste
+                 deriving Show
+
+--------------------------------------------------------------------------------------- exercicio 44 ---------------------------------------------------------------------------------------------
+-- dada uma posicao inicial (coordenadas) e uma lista de movimentos, calcula a posicao final do robot depois de efectuar essa sequencia de movimentos
+
+posicao_my :: (Int,Int) -> [Movimento] -> (Int,Int)
