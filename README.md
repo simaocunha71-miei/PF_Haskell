@@ -13,6 +13,5 @@
     • FICHA8: Classes de tipos
     • FICHA9: Input / Output
     • Coletânea de 50 questões de preparação para o primeiro teste de Programação Funcional
-    • Programa feito por mim com o intuito de treinar o tópico "Input/Output" 
-    onde se imprime uma questão de forma aleatória da coletânea de 50 questões
+    • Programa feito por mim com o intuito de treinar o tópico "Input/Output" onde se imprime uma questão de forma aleatória da coletânea de 50 questões
 ```
