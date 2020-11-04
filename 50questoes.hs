@@ -738,7 +738,7 @@ data Posicao = Pos Int Int
 
 maisCentral_my :: [Posicao] -> Posicao
 maisCentral_my [(Pos x y)]               = (Pos x y) 
-maisCentral_my ((Pos x y):(Pos x1 y1):t) = if dist1 < dist2 then (Pos x y)
+maisCentral_my ((Pos x y):(Pos x1 y1):t) = if dist1 < dist2 then maisCentral_my ((Pos x y):t)
                                                             else maisCentral_my ((Pos x1 y1):t)
                                          where
                                           dist1 = sqrt (fromIntegral(x^2  + y^2))
