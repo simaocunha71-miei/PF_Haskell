@@ -173,10 +173,12 @@ associa_questao i = case i of
                                 "unwords :: [String] -> String"]
 
                          27 -> ["",
-                                "Junta todas as strings da lista numa só, separando-as pelo caracter '\n'. ",
-                                "Por exemplo, unlines ['Prog', 'Func'] corresponde a 'Prog\nFunc\n'. " ,
+                                "Junta todas as strings da lista numa só, separando-as pelo caracter '/n'. ",
+                                "Por exemplo, unlines ['Prog', 'Func'] corresponde a 'Prog/nFunc/n'. " ,
                                 "",
-                                "unlines :: [String] -> String"]
+                                "unlines :: [String] -> String",
+                                "",
+                                "NOTA: '/n' quer dizer o caracter de mudança de linha - newline (consultar http://learnyouahaskell.com/input-and-output)"]
 
                          28 -> ["",
                                 "Dada uma lista não vazia, retorna a posição onde se encontra o maior elemento da lista." ,
