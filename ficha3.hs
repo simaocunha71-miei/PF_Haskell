@@ -188,17 +188,16 @@ acrescEmail nome email ((name,(contacts)) : t) | nome == name = (name,([(Email e
 -- alinea B
 -- dado um nome e uma agenda, retorna a lista dos emails associados a esse nome. Se esse nome nao existir na agenda a funcao deve retornar Nothing
 verEmails :: Nome -> Agenda -> Maybe [String]
-verEmails nome []      = Nothing
-verEmails nome [(a,b)] = if nome == a       then Just (devolve_email b) else Nothing
-verEmails nome (h:t)   = if nome == fst (h) then verEmails nome [h]     else verEmails nome t 
+verEmails _ []                     = Nothing
+verEmails nome ((name,contacts):t) = if nome == name then Just (retorna_emails contacts)
+                                                     else verEmails nome t
 
 
 -- funcao auxiliar
-devolve_email :: [Contacto] -> [String]
-devolve_email []            = []
-devolve_email [(Email e)]   = [e]
-devolve_email ((Email e):t) = e : devolve_email t 
-devolve_email (_:t)         = []
+retorna_emails :: [Contacto] -> [String]
+retorna_emails []            = []
+retorna_emails ((Email e):t) = e: retorna_emails t
+retorna_emails (_:t)         = retorna_emails t
 
 
 -- alinea C
