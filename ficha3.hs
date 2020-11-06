@@ -181,7 +181,9 @@ type Agenda = [(Nome, [Contacto])]
 -- alinea A
 -- dado um nome, um email e uma agenda, acrescenta essa informacao a agenda
 acrescEmail :: Nome -> String -> Agenda -> Agenda
-acrescEmail nome email agenda = [(nome,[Email email])] ++ agenda 
+acrescEmail nome email [] = [(nome, [(Email email)])]
+acrescEmail nome email ((name,(contacts)) : t) | nome == name = (name,([(Email email)] ++ contacts)) :t
+                                               | otherwise    = (name,contacts) : acrescEmail nome email t
 
 -- alinea B
 -- dado um nome e uma agenda, retorna a lista dos emails associados a esse nome. Se esse nome nao existir na agenda a funcao deve retornar Nothing
