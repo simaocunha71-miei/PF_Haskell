@@ -455,19 +455,19 @@ Funcao auxiliar:
 -- dada uma lista nao vazia, retorna a posicao onde se encontra o maior elemento da lista. 
 -- As posicoes da lista comecam em 0, i.e., a funcao devera retornar 0 se o primeiro elemento da lista for o maior
 
-pMaior_my :: Ord a => [a] -> Int
-pMaior_my [a] = 0
-pMaior_my (h:t) | h > (t !! (pMaior_my t)) = 1
-                | otherwise                = 1 + pMaior_my t
+pMaior :: Ord a => [a] -> Int
+pMaior l = if (maximum l == head l) then 0
+                                    else 1 + pMaior (tail l)
 
-{-
-Funcao auxiliar:
+-- ou (funçao abaixo com menor tempo de execução)
 
-(!!) :: [a] -> Int -> a
-(!!) (h:t) a = if a == 0 then h 
-                         else (!!) t (a-1)
-
--} 
+pMaior1 :: Ord a => [a] -> Int
+pMaior1 l = posicao_pmaior maior l
+         where
+          maior = maximum l
+          posicao_pmaior :: Eq a => a -> [a] -> Int
+          posicao_pmaior x (h:t) | x == h = 0
+                                 | otherwise = 1 + posicao_pmaior x t 
 
 --------------------------------------------------------------------------------------- exercicio 29 ---------------------------------------------------------------------------------------------
 -- testa se uma lista tem elementos repetidos
