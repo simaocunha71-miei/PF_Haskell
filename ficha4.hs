@@ -87,12 +87,16 @@ alineaC = [ [1..x] | x <- [1..5]]
 
 alineaD = [ replicate x 1 | x <- [1..5]]
 
+alineaD' = [[1 | i <- [1..x]] | x <- [1..5]]
+
 -- alinea E
 -- [1,2,6,24,120,720]
 
 alineaE = [ factorial x | x <- [1..6]]
             where factorial 0 = 1
                   factorial x = x * factorial (x - 1)
+
+alineaE' = [product [1..x] | x <- [1..6]]
 
 --------------------------------------------------------------------------------------- exercicio 3 ----------------------------------------------------------------------------------------------
 -- que dada uma string, devolve um par de strings: uma apenas com as letras presentes nessa string, e a outra apenas com os numeros presentes na string
@@ -144,3 +148,10 @@ fib 1 = 1
 fib n = fib (n-1) + fib (n-2)
 
 -}
+
+-- Funçoes com listas de compreensão
+-- Map
+my_map f l = [f l | x <- l]
+
+-- Replicate
+my_replicate n x = [x |i <- [1..n]]
