@@ -418,7 +418,7 @@ insert_my a (h:t) | a < h     = a : h : t
 
 unwords_my :: [String] -> String
 unwords_my []    = ""
-unwords_my (h:t) = h ++ unwords_my t
+unwords_my (h:t) = h ++ " " ++ unwords_my t
 
 {-
 Funcao auxiliar:
