@@ -185,3 +185,11 @@ aprovAv turma = a / b
                   (c,d) = aux l
                   (e,f) = aux r
 -}
+
+-- EXERCICIO EXTRA
+-- Dada uma arvore binaria, coloca os seus elementos numa lista
+toList :: BTree a -> [a]
+toList Empty = []
+toList (Node x esq dir) = [x] ++ toList esq ++ toList dir  -- travessia preorder 
+                       -- toList esq ++ [x] ++ toList dir  -- travessia inorder
+                       -- toList esq ++ toList dir ++ [x]  -- travessia posorder
