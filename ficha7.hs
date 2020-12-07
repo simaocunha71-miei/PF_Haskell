@@ -27,6 +27,7 @@ calcula (Mult i j)    = (calcula i) * (calcula j)
 
 infixa :: ExpInt -> String
 infixa (Const i)     = [intToDigit (i)]
+					   -- show i
 infixa (Simetrico i) = ['-']++(infixa i)
 infixa (Mais i j)    = ['(']++(infixa i)++['+']++(infixa j)++[')']
 infixa (Menos i j)   = ['(']++(infixa i)++['-']++(infixa j)++[')']
