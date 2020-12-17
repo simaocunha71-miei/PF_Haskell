@@ -116,3 +116,72 @@ class Num a where
 -}
 
 -- temos de definir várias funçoes (ao contrário das instâncias acima escritas)
+
+--------------------------------------------------------------------------------------- exercicio 2 ----------------------------------------------------------------------------------------------
+data Exp a = Const a
+           | Simetrico (Exp a)
+           | Mais (Exp a) (Exp a)
+           | Menos (Exp a) (Exp a)
+           | Mult (Exp a) (Exp a)
+
+-- alinea A
+instance Show a => Show (Exp a) where
+    show (Const a)     = show a 
+    show (Simetrico e) = "-" ++ "(" ++ show e ++ ")"
+    show (Mais a b)    = show a ++ "+" ++ show b
+    show (Menos a b)   = show a ++ "-" ++ show b
+    show (Mult a b)    = show a ++ "*" ++ show b
+
+-- alinea B
+
+exp_to_val :: (Num a) => Exp a -> a
+exp_to_val (Const a)     = a
+exp_to_val (Simetrico a) = - (exp_to_val a)
+exp_to_val (Mais a b)    = exp_to_val a + exp_to_val b
+exp_to_val (Menos a b)   = exp_to_val a - exp_to_val b
+exp_to_val (Mult a b)    = exp_to_val a * exp_to_val b
+
+instance (Num a,Eq a) => Eq (Exp a) where 
+  x == y = exp_to_val x == exp_to_val y
+
+-- alinea C
+
+instance (Num a,Eq a) => Num (Exp a) where 
+  x + y = Const (exp_to_val x + exp_to_val y)
+  x - y = Const (exp_to_val x - exp_to_val y)
+  x * y = Const (exp_to_val x * exp_to_val y)
+
+  negate (Const a)     = Const (-a)
+  negate (Simetrico a) = a
+  negate (Mais a b)    = Mais (-a) (-b)
+  negate (Menos a b)   = Menos b (a) -- equivalente a -(a-b) = -a+b = b-a
+  negate (Mult a b)    = Mult (-a) b
+
+  fromInteger x = Const (fromInteger x)
+  
+  abs (Const a)     = Const (abs a)
+  abs (Simetrico a) = abs a
+  abs (Mais a b)    = abs (a + b)
+  abs (Menos a b)   = abs (a - b)
+  abs (Mult a b)    = abs (a * b)
+  
+  signum (Const a)     = Const (if abs a == a then if a == 0 then 0 else 1 else (-1))
+  signum (Simetrico a) = - signum a
+  signum (Mais a b)    = Const (if abs (a + b) == a + b then if a + b == 0 then 0 else 1 else (-1))
+  signum (Menos a b)   = Const (if abs (a - b) == a - b then if a - b == 0 then 0 else 1 else (-1))
+  signum (Mult a b)    = Const (if abs (a * b) == a * b then if a * b == 0 then 0 else 1 else (-1))
+
+--------------------------------------------------------------------------------------- exercicio 3 ----------------------------------------------------------------------------------------------
+data Movimento = Credito Float 
+               | Debito Float
+
+data Data = D Int Int Int deriving Eq
+
+data Extracto = Ext Float [(Data, String, Movimento)]
+
+-- alinea A
+instance Ord Data where
+    compare (D dia1 mes1 ano1) (D dia2 mes2 ano2) | ano1 > ano2 || ano1 == ano2 && (mes1 > mes2 || mes1 == mes2 && dia1 > dia2) = GT
+                                                  | ano1 == ano2 && mes1 == mes2 && dia1 == dia2 = EQ
+                                                  | otherwise = LT
+-- alinea B
