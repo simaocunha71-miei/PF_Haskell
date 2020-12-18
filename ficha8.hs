@@ -146,7 +146,7 @@ instance (Num a,Eq a) => Eq (Exp a) where
 
 -- alinea C
 
-instance (Num a,Eq a) => Num (Exp a) where 
+instance (Num a,Eq a, Ord a) => Num (Exp a) where 
   x + y = Const (exp_to_val x + exp_to_val y)
   x - y = Const (exp_to_val x - exp_to_val y)
   x * y = Const (exp_to_val x * exp_to_val y)
@@ -164,12 +164,37 @@ instance (Num a,Eq a) => Num (Exp a) where
   abs (Mais a b)    = abs (a + b)
   abs (Menos a b)   = abs (a - b)
   abs (Mult a b)    = abs (a * b)
-  
-  signum (Const a)     = Const (if abs a == a then if a == 0 then 0 else 1 else (-1))
+
+  signum (Const a) = Const (if abs a == a then if a == 0 then 0 else 1 else (-1))
   signum (Simetrico a) = - signum a
-  signum (Mais a b)    = Const (if abs (a + b) == a + b then if a + b == 0 then 0 else 1 else (-1))
-  signum (Menos a b)   = Const (if abs (a - b) == a - b then if a - b == 0 then 0 else 1 else (-1))
-  signum (Mult a b)    = Const (if abs (a * b) == a * b then if a * b == 0 then 0 else 1 else (-1))
+  signum (Mais a b) = Const (if abs (a + b) == a + b then if a + b == 0 then 0 else 1 else (-1))
+  signum (Menos a b) = Const (if abs (a - b) == a - b then if a - b == 0 then 0 else 1 else (-1))
+  signum (Mult a b) = Const (if abs (a * b) == a * b then if a * b == 0 then 0 else 1 else (-1))
+
+{-  
+  signum x     = Const (retornaSinal x)
+
+retornaSinal :: (Num a, Ord a, Eq a) => Exp a -> a
+retornaSinal (Const a) |exp_to_val a > 0 = 1
+                       |exp_to_val a < 0 = -1
+                       |otherwise = 0
+
+retornaSinal (Simetrico a) |exp_to_val a > 0 = -1
+                           |exp_to_val a < 0 = 1
+                           |otherwise = 0
+
+retornaSinal (Mais a b) |(retornaSinal (exp_to_val a)) + (retornaSinal (exp_to_val b)) > 0 = 1
+                        |(retornaSinal (exp_to_val a)) + (retornaSinal (exp_to_val b)) < 0 = -1
+                        |otherwise = 0
+
+retornaSinal (Menos a b) |(retornaSinal (exp_to_val a)) - (retornaSinal (exp_to_val b)) > 0 = 1
+                         |(retornaSinal (exp_to_val a)) - (retornaSinal (exp_to_val b)) < 0 = -1
+                         |otherwise = 0
+
+retornaSinal (Mult a b)  |(retornaSinal (exp_to_val a)) * (retornaSinal (exp_to_val b)) > 0 = 1
+                         |(retornaSinal (exp_to_val a)) * (retornaSinal (exp_to_val b)) < 0 = -1
+                         |otherwise = 0
+-}
 
 --------------------------------------------------------------------------------------- exercicio 3 ----------------------------------------------------------------------------------------------
 data Movimento = Credito Float 
